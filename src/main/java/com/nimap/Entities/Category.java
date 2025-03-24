@@ -13,20 +13,20 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="category")
+@Table(name = "categories")
 public class Category {
-
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="CId")
     private Long id;
-	@Column
-	private String name;
+    @Column(name="CName")
+    private String name;
+    
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Product> products;
+
 	
-	 @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-	    private List<Product> products;
-
-
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -49,6 +49,12 @@ public class Category {
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
+	public Category(Long id, String name, List<Product> products) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.products = products;
+	}
 
 	@Override
 	public int hashCode() {
@@ -66,18 +72,6 @@ public class Category {
 		Category other = (Category) obj;
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name)
 				&& Objects.equals(products, other.products);
-	}
-
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", products=" + products + "]";
-	}
-
-	public Category(Long id, String name, List<Product> products) {
-		
-		this.id = id;
-		this.name = name;
-		this.products = products;
 	}
 
 	public Category() {
